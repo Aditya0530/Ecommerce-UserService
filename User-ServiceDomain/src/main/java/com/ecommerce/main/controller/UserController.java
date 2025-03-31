@@ -14,6 +14,8 @@ import com.ecommerce.main.model.Product;
 import com.ecommerce.main.model.User;
 import com.ecommerce.main.servicei.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -21,7 +23,7 @@ public class UserController {
 UserService userService;
 
 @PostMapping("/save_User")
-public ResponseEntity<UserDto> saveProduct(@RequestBody User user){
+public ResponseEntity<UserDto> saveProduct(@Valid @RequestBody User user){
 UserDto userDto=userService.saveUser(user);
 return new ResponseEntity<UserDto>(userDto,HttpStatus.CREATED);
 }

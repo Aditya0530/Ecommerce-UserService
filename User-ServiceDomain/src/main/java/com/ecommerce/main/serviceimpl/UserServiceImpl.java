@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.main.dto.UserDto;
 import com.ecommerce.main.exceptionhandler.InvalidCredentialsException;
-import com.ecommerce.main.model.Product;
 import com.ecommerce.main.model.User;
 import com.ecommerce.main.repository.UserRepository;
 import com.ecommerce.main.servicei.UserService;
