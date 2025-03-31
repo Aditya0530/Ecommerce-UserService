@@ -48,6 +48,6 @@ public class User {
 	@OneToMany(cascade = CascadeType.MERGE) // patch method for user // logincheck //getAll //post only user
 	private List<Product> product;
 	@OneToMany(cascade = CascadeType.MERGE)
-	private List<UOrder> order;
+	private List<Order> order;
 
 }
