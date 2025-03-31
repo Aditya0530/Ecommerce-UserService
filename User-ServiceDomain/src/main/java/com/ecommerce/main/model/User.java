@@ -36,7 +36,7 @@ private String address;
 @OneToMany(cascade=CascadeType.MERGE) // patch method for user // logincheck //getAll //post only user
 private List<Product> product;
 @OneToMany(cascade=CascadeType.MERGE)
-private List<Order> order;
+private List<UOrder> order;
 
 }
 

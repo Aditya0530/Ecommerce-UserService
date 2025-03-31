@@ -6,8 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Product {
+public class UOrder {
 //@GeneratedValue(strategy = GenerationType.IDENTITY)
 @Id
-private int productId;
+public int orderId;
 }
