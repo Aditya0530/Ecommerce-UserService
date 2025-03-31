@@ -1,9 +1,8 @@
 package com.ecommerce.main.dto;
 
 import java.util.List;
-
-import com.ecommerce.main.model.Order;
 import com.ecommerce.main.model.Product;
+import com.ecommerce.main.model.Order;
 import com.ecommerce.main.model.User;
 
 import lombok.AllArgsConstructor;
