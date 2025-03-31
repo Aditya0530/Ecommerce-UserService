@@ -32,4 +32,12 @@ return new ResponseEntity<UserDto>(userDto,HttpStatus.CREATED);
 public ResponseEntity<Iterable<User>> login(@PathVariable("username") String username, @PathVariable("password") String password) {
  Iterable<User> user = userService.loginUser(username, password);
     return new ResponseEntity<>(user, HttpStatus.OK);
-}}
+}
+
+@GetMapping("/search_Product") 
+public ResponseEntity<Iterable<Product>> getAll(){
+	Iterable<Product> p=userService.getAll();
+	 return new ResponseEntity<>(p, HttpStatus.OK);
+}
+
+}
