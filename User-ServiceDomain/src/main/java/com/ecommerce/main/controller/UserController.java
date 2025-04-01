@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.ecommerce.main.dto.ProductDto;
 import com.ecommerce.main.dto.UserDto;
 import com.ecommerce.main.model.Product;
 import com.ecommerce.main.model.User;
@@ -38,6 +40,12 @@ public ResponseEntity<Iterable<User>> login(@PathVariable("username") String use
 public ResponseEntity<Iterable<Product>> getAll(){
 	Iterable<Product> p=userService.getAll();
 	 return new ResponseEntity<>(p, HttpStatus.OK);
+}
+
+@GetMapping("/search_ProductByName/{productName}") 
+public ResponseEntity<Product> getproductByName(@PathVariable("productName") String productName){
+	Product p=userService.getByName(productName);
+	 return new ResponseEntity<Product>(p, HttpStatus.OK);
 }
 
 }
