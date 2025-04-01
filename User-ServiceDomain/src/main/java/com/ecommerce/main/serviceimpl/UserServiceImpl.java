@@ -63,18 +63,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Product getByName(String productName) {
 	    String url = "http://localhost:9292/product/getByName/" + productName;
-		/*
-		 * HttpHeaders headers = new HttpHeaders();
-		 * headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON)); //
-		 * Set the Accept header for JSON HttpEntity<String> entity = new
-		 * HttpEntity<>(headers);
-		 * 
-		 * // Use the correct response type ResponseEntity<ProductDto> response =
-		 * restTemplate.exchange( url, HttpMethod.GET, entity, new
-		 * ParameterizedTypeReference<ProductDto>() {} );
-		 * 
-		 * return response.getBody();
-		 */
 	    Product pro=restTemplate.getForObject(url, Product.class);
 	    return pro;
 	}
