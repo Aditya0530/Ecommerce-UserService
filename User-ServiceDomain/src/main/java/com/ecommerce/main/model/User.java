@@ -49,11 +49,11 @@ public class User {
 	
 	@NotNull(message = "Mobile number cannot be null")
 	@Pattern(regexp = "^[0-9]{10}$", message = "Mobile number must be exactly 10 digits")
-    private long mobileno;
+    private String mobileno;
 	
-	@OneToMany(cascade = CascadeType.MERGE) // patch method for user // logincheck //getAll //post only user
+	@OneToMany(cascade = CascadeType.ALL) // patch method for user // logincheck //getAll //post only user
 	private List<Product> product;
-	@OneToMany(cascade = CascadeType.MERGE)
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Order> order;
 
 }

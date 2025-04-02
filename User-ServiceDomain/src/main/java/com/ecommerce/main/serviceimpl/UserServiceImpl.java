@@ -6,6 +6,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -16,10 +18,12 @@ import org.springframework.web.client.RestTemplate;
 
 import com.ecommerce.main.dto.ProductDto;
 import com.ecommerce.main.dto.UserDto;
+import com.ecommerce.main.exceptionhandler.EmailSendingException;
 import com.ecommerce.main.exceptionhandler.InvalidCredentialsException;
 import com.ecommerce.main.model.Product;
 import com.ecommerce.main.model.User;
 import com.ecommerce.main.repository.UserRepository;
+import com.ecommerce.main.servicei.EmailService;
 import com.ecommerce.main.servicei.UserService;
 
 @Service
@@ -29,6 +33,12 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	RestTemplate restTemplate;
+	
+	@Autowired
+    private EmailService emailService;
+	
+    private final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
 
 	@Override
 	public UserDto saveUser(User user) {
@@ -48,6 +58,18 @@ public class UserServiceImpl implements UserService {
 			if (user.isEmpty()) {
 				throw new InvalidCredentialsException("Username And Password Incorrect");
 			} else {
+				
+				String userEmail = user.get(0).getEmail();
+				
+                try {
+                	
+                    emailService.sendEmail(userEmail, "Login Successful", "You have successfully logged in.");
+                    
+                } catch (EmailSendingException e) {
+                	
+                    LOGGER.error("Failed to send email", e);
+                }
+                
 				return user;
 			}
 		}
