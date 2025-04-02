@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.main.dto.UserDto;
 import com.ecommerce.main.exceptionhandler.InvalidCredentialsException;
+import com.ecommerce.main.model.Product;
 import com.ecommerce.main.model.User;
 import com.ecommerce.main.repository.UserRepository;
 import com.ecommerce.main.servicei.UserService;
@@ -41,5 +42,18 @@ public Iterable<User> loginUser(String username, String password) {
 		}
 	}
 }
+
+@Override
+public User getUser(int userId) {
+User u=userRepository.findAllByUserId(userId);
+return u;
+}
+@Override
+public void addtocart(List l) {
+userRepository.save(l);
+	
+}
+
+
 
 }
