@@ -22,6 +22,12 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(errDto, HttpStatus.UNAUTHORIZED);
 	}
 
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<ErrorDto> handleNoResourceFoundExceptions(ResourceNotFoundException ex) {
+		ErrorDto errDto=new ErrorDto(ex.getMessage());
+		return new ResponseEntity<>(errDto, HttpStatus.NOT_FOUND);
+	}
+	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
