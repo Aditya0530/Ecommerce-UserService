@@ -6,10 +6,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,9 +48,15 @@ public class User {
 	@Size(min = 10, max = 100, message = "Address must be between 10 and 100 characters")
 	private String address;
 	
-	@OneToMany(cascade = CascadeType.MERGE) // patch method for user // logincheck //getAll //post only user
+	@NotNull(message = "Mobile number cannot be null")
+	@Pattern(regexp = "^[0-9]{10}$", message = "Mobile number must be exactly 10 digits")
+    private String mobileno;
+	
+	@OneToMany(cascade = CascadeType.MERGE ,orphanRemoval = true)@JoinColumn(name="user_id") // patch method for user // logincheck //getAll //post only user
 	private List<Product> product;
 	@OneToMany(cascade = CascadeType.MERGE)
 	private List<Order> order;
+	
+
 
 }

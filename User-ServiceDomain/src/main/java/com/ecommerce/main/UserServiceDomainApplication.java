@@ -11,10 +11,12 @@ public class UserServiceDomainApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UserServiceDomainApplication.class, args);
 	}
-@Bean
-public RestTemplate rt() {
-RestTemplate rs=new RestTemplate();
-return rs;
-}
+
+	@Bean 
+	public RestTemplate rs() {
+		
+		return new RestTemplate();
+	}
+
 
 }
