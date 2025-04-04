@@ -52,7 +52,7 @@ public class UserController {
 		return new ResponseEntity<>(p, HttpStatus.OK);
 	}
 
-	@PostMapping("purchase_Product/{userId}/{productName}/{quantityAvailable}")
+	@PostMapping("/purchase_Product/{userId}/{productName}/{quantityAvailable}")
 	public ResponseEntity<String> purchaseProduct(@PathVariable("userId") int userId,
 			@PathVariable("productName") String productName, @PathVariable("quantityAvailable") int quantityAvailable) {
 		{

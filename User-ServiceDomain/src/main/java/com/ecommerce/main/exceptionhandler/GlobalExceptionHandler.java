@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ecommerce.main.dto.ErrorDto;
+import com.ecommerce.main.dto.MailErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -36,4 +37,15 @@ public class GlobalExceptionHandler {
         }
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+	
+	@ExceptionHandler(EmailSendingException.class)
+    public ResponseEntity<MailErrorResponse> handleEmailSendingException(EmailSendingException e) {
+        MailErrorResponse errorResponse = new MailErrorResponse("EMAIL_SENDING_ERROR", "Failed to send email");
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorDto> handleParentExceptions(Exception ex) {
+		ErrorDto errDto=new ErrorDto(ex.getMessage());
+		return new ResponseEntity<>(errDto, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

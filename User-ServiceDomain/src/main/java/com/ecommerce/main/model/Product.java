@@ -8,6 +8,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
@@ -20,48 +22,46 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="products")
+@Table(name = "products")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-//@GeneratedValue(strategy = GenerationType.IDENTITY)
-@Id
-private int productId;// add to cart // remove from cart  //  
-private String productName;
-private String description;
-private String brand;
-private String category;
-private double price;
-private boolean available;
-private int quantityAvailable;
 
-/*
- * @OneToMany(cascade = CascadeType.ALL)
- * 
- * @JoinColumn(name = "product_id")
- */
-/*
- * @ElementCollection private List<ProductImage> productImages;
- */ //single image 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int productId;// add to cart // remove from cart //
+	private String productName;
+	private String description;
+	private String brand;
+	private String category;
+	private double price;
+	private boolean available;
+	private int quantityAvailable;
 
-@OneToOne
-private ProductImage productImage;
+	/*
+	 * @OneToMany(cascade = CascadeType.ALL)
+	 * 
+	 * @JoinColumn(name = "product_id")
+	 */
+	/*
+	 * @ElementCollection private List<ProductImage> productImages;
+	 */ // single image
 
-/*
- * @OneToMany(cascade = CascadeType.ALL)
- * 
- * @JoinColumn(name = "product_id")
- */
-@Transient
-private List<ProductFeatures> productFeatures;
-
-/*
- * @OneToMany(cascade = CascadeType.ALL)
- * 
- * @JoinColumn(name = "product_id")
- */
-//@ElementCollection
-@Transient
-private List<ProductReview> productReviews;
-}             
+	/*
+	 * @OneToOne private ProductImage productImage;
+	 * 
+	 * @OneToMany(cascade = CascadeType.ALL)
+	 * 
+	 * //@JoinColumn(name = "product_id")
+	 * 
+	 * //@ElementCollection private List<ProductFeatures> productFeatures;
+	 * 
+	 * @OneToMany(cascade = CascadeType.ALL)
+	 * 
+	 * //@JoinColumn(name = "product_id")
+	 * 
+	 * //@ElementCollection //@ElementCollection private List<ProductReview>
+	 * productReviews;
+	 */
+}
