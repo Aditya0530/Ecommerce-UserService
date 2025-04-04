@@ -1,13 +1,6 @@
 package com.ecommerce.main.dto;
 
-import java.util.List;
-
 import com.ecommerce.main.model.Product;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 public class ProductDto{
 	
@@ -15,7 +8,8 @@ public class ProductDto{
     private String productName;
     private String description;
     private String brand;
-    private double price; 
+    private double price;
+     
 
     public ProductDto(Product product) {
         this.productId = product.getProductId();
@@ -23,8 +17,7 @@ public class ProductDto{
         this.description = product.getDescription();
         this.brand = product.getBrand();
         this.price = product.getPrice();
-    }
-
+       }
 	public int getProductId() {
 		return productId;
 	}

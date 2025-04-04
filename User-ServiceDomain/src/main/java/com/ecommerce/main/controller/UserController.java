@@ -52,12 +52,15 @@ public ResponseEntity<Iterable<Product>> getAll(){
 	 return new ResponseEntity<>(p, HttpStatus.OK);
 }
 @GetMapping("/search_ProductByName/{productName}") 
-public ResponseEntity<List<Product>> getproductByName(@PathVariable("productName") String productName){
-	List<Product> p=userService.getByName(productName);
-	 return new ResponseEntity<List<Product>>(p, HttpStatus.OK);
+public ResponseEntity <Iterable<Product>> getproductByName(@PathVariable("productName") String productName){
+	Iterable<Product> p=userService.getByName(productName);
+	 return new ResponseEntity<Iterable<Product>>(p, HttpStatus.OK);
 }
+@PutMapping("/add/{userId}/{productName}")
+public ResponseEntity<String> updateUserProducts(@PathVariable("userId") int userId, @PathVariable("productName") String productName) {
+    userService.addToCart(userId, productName);
+    return new ResponseEntity<String>("Products updated successfully",HttpStatus.OK);
 
-
-
+}
 
 }

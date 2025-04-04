@@ -10,7 +10,7 @@ public UserDto saveUser(User user);
 public Iterable<User> loginUser(String username, String password);
 public User getUser(int userId);
 public Iterable<Product> getAll();
-public List<Product> getByName(String productName);
-
+public Iterable<Product> getByName(String productName) ;
+public void addToCart(int userId, String productName);
 
 }

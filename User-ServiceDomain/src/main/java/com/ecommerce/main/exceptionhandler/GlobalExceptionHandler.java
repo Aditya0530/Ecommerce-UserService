@@ -37,5 +37,11 @@ public class GlobalExceptionHandler {
         MailErrorResponse errorResponse = new MailErrorResponse("EMAIL_SENDING_ERROR", "Failed to send email");
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+	
+	@ExceptionHandler(UserIdNotFoundException.class)
+	public ResponseEntity<ErrorDto> handleUserIdNotFoundExceptions(UserIdNotFoundException ex) {
+		ErrorDto errDto=new ErrorDto(ex.getMessage());
+		return new ResponseEntity<>(errDto, HttpStatus.UNAUTHORIZED);
+	}
 
 }
