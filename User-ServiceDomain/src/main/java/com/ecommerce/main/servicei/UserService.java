@@ -1,6 +1,5 @@
 package com.ecommerce.main.servicei;
 
-import com.ecommerce.main.dto.ProductDto;
 import com.ecommerce.main.dto.UserDto;
 import com.ecommerce.main.model.Product;
 import com.ecommerce.main.model.User;
@@ -12,6 +11,8 @@ public Iterable<User> loginUser(String username, String password);
 
 public Iterable<Product> getAll();
 
-public Product getByName(String productName);
+public Iterable<Product> getByName(String productName);
+
+public void addToCart(int userId, String productName);
 
 }
