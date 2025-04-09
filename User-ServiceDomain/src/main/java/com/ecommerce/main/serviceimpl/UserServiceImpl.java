@@ -2,11 +2,16 @@ package com.ecommerce.main.serviceimpl;
 
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +36,11 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	RestTemplate restTemplate;
-	
-	@Autowired
-    private EmailService emailService;
-	
-    private final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
+	@Autowired
+	private EmailService emailService;
+
+	private final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Override
 	public UserDto saveUser(User user) {
@@ -47,46 +51,45 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Iterable<User> loginUser(String username, String password) {
 
-		if ("Admin".equalsIgnoreCase(username) && "Admin".equalsIgnoreCase(password)) {
+	 if ("Admin".equalsIgnoreCase(username) && "Admin".equalsIgnoreCase(password)) {
+	return userRepository.findAll();
+		} 
+	 else {
+	 List<User> user = (List<User>) userRepository.findAllByUsernameAndPassword(username, password);
 
-			return userRepository.findAll();
-		} else {
-			List<User> user = (List<User>) userRepository.findAllByUsernameAndPassword(username, password);
-
-			if (user.isEmpty()) {
-				throw new InvalidCredentialsException("Username And Password Incorrect");
-			} else {
-				
-				String userEmail = user.get(0).getEmail();
-				
-                try {
-                	
-                    emailService.sendEmail(userEmail, "Login Successful", "You have successfully logged in.");
-                    
-                } catch (EmailSendingException e) {
-                	
-                    LOGGER.error("Failed to send email", e);
-                }
-                
-				return user;
-			}
-		}
+	if (user.isEmpty()) {
+	throw new InvalidCredentialsException("Username And Password Incorrect");
+	} 
+	else {
+	String userEmail = user.get(0).getEmail();
+	try {
+	emailService.sendEmail(userEmail, "Login Successful", "You have successfully logged in.");
+	} 
+	catch (EmailSendingException e) {
+    LOGGER.error("Failed to send email", e);
+	}
+   return user;
+	}
+	}
+	}
+	@Override
+	public Iterable<Product> getAll() {
+	String url = "http://localhost:9292/product/getAll";
+	Iterable<Product> res = restTemplate.getForObject(url, Iterable.class);
+	return res;
 	}
 
 	@Override
-	public Iterable<Product> getAll() {
-		String url = "http://localhost:9292/product/getAll";
-		Iterable<Product> res = restTemplate.getForObject(url, Iterable.class);
-		return res;
+	public User getUser(int userId) {
+	User u = userRepository.findAllByUserId(userId);
+	return u;
 	}
-
 	@Override
 	public Iterable<Product> getByName(String productName) {
 	    String url = "http://localhost:9292/product/getByName/" + productName;
 	    Iterable<Product> pro=restTemplate.getForObject(url, Iterable.class);
 	    return pro;
 	}
-
 	@Override
 	public void addToCart(int userId, int productId) {
 
@@ -107,11 +110,11 @@ public class UserServiceImpl implements UserService {
               String imageDataString = (String) productImageMap.get("imageData");
               byte[]   imageData = Base64.getDecoder().decode(imageDataString);
 
-               Product productToUpdate = new Product();
-          productToUpdate.setProductId((Integer)productFromProductModule.get("productId"));
+                   Product productToUpdate = new Product();
+            productToUpdate.setProductId((Integer) productFromProductModule.get("productId"));
             productToUpdate.setProductName((String)productFromProductModule.get("productName"));
-          productToUpdate.setDescription((String)productFromProductModule.get("description"));
-           productToUpdate.setBrand((String)productFromProductModule.get("brand"));
+            productToUpdate.setDescription((String)productFromProductModule.get("description"));
+            productToUpdate.setBrand((String)productFromProductModule.get("brand"));
             productToUpdate.setPrice((Double)productFromProductModule.get("price"));
            
                 productToUpdate.setImage(imageData);

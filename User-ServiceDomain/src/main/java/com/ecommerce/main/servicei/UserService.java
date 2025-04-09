@@ -5,14 +5,20 @@ import com.ecommerce.main.model.Product;
 import com.ecommerce.main.model.User;
 
 public interface UserService {
-public UserDto saveUser(User user);
 
-public Iterable<User> loginUser(String username, String password);
+	public UserDto saveUser(User user);
 
-public Iterable<Product> getAll();
+	public Iterable<User> loginUser(String username, String password);
 
-public Iterable<Product> getByName(String productId);
+	public User getUser(int userId);
 
-public void addToCart(int userId, int productId);
+	public Iterable<Product> getAll();
+
+
+	public Iterable<Product> getByName(String productName);
+
+
+	public void addToCart(int userId, int productId);
+
 
 }

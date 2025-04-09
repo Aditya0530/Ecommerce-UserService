@@ -1,5 +1,6 @@
 package com.ecommerce.main.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,13 +35,11 @@ public ResponseEntity<Iterable<User>> login(@PathVariable("username") String use
  Iterable<User> user = userService.loginUser(username, password);
     return new ResponseEntity<>(user, HttpStatus.OK);
 }
-
 @GetMapping("/search_Product") 
 public ResponseEntity<Iterable<Product>> getAll(){
 	Iterable<Product> p=userService.getAll();
 	 return new ResponseEntity<>(p, HttpStatus.OK);
 }
-
 @GetMapping("/search_ProductByName/{productName}") 
 public ResponseEntity <Iterable<Product>> getproductByName(@PathVariable("productName") String productName){
 	Iterable<Product> p=userService.getByName(productName);
@@ -51,7 +50,7 @@ public ResponseEntity <Iterable<Product>> getproductByName(@PathVariable("produc
 public ResponseEntity<String> updateUserProducts(@PathVariable("userId") int userId, @PathVariable("productId") int productId) {
     userService.addToCart(userId, productId);
     return new ResponseEntity<String>("Products updated successfully",HttpStatus.OK);
-}
 
 }
 
+}

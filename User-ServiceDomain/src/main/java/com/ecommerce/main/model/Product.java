@@ -23,9 +23,8 @@ private String description;
 private String brand;
 private double price;
 
+
 @Lob
 @Column(length = 999999999)
 private byte[] image;
-
-
 }             
