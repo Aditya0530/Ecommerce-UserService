@@ -11,8 +11,8 @@ public Iterable<User> loginUser(String username, String password);
 
 public Iterable<Product> getAll();
 
-public Iterable<Product> getByName(String productName);
+public Iterable<Product> getByName(String productId);
 
-public void addToCart(int userId, String productName);
+public void addToCart(int userId, int productId);
 
 }

@@ -1,15 +1,20 @@
 package com.ecommerce.main.serviceimpl;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.ecommerce.main.dto.UserDto;
+import com.ecommerce.main.exceptionhandler.DuplicateProductFoundException;
 import com.ecommerce.main.exceptionhandler.EmailSendingException;
 import com.ecommerce.main.exceptionhandler.InvalidCredentialsException;
 import com.ecommerce.main.exceptionhandler.UserIdNotFoundException;
@@ -83,38 +88,38 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void addToCart(int userId, String productName) {
-		
-	    String url = "http://localhost:9292/product/getByName/" + productName;
+	public void addToCart(int userId, int productId) {
 
-	    List<Map<String, Object>> productsFromProductModule = restTemplate.getForObject(url, List.class, productName);
-		
-        List<Product> productsToUpdate = new ArrayList<>();
+	    Map<String, Object> productFromProductModule = restTemplate.getForObject("http://localhost:9292/product/getById/" + productId, Map.class);       
+	    User user = userRepository.findById(userId).orElseThrow(()-> new UserIdNotFoundException("Please input correct user id"));
+        int newProductId=(Integer)productFromProductModule.get("productId");
+	   
+        for(Product product : user.getProduct()){
+	    	
+	    	if(product.getProductId()==newProductId) {
+	    		
+	    		throw new DuplicateProductFoundException("Product id already present");
+	    	}
+	    }
+ List<Map<String, Object>> productImages =  (List<Map<String, Object>>) productFromProductModule.get("productImages");
+          
+               Map<String, Object> productImageMap = productImages.get(0);
+              String imageDataString = (String) productImageMap.get("imageData");
+              byte[]   imageData = Base64.getDecoder().decode(imageDataString);
 
-        for (Map<String, Object> productFromProductModule : productsFromProductModule) {
-        	
-        	// Access the list of images and get the first image
-List<Map<String, Object>> productImages = (List<Map<String, Object>>) productFromProductModule.get("productImages");
-         
-                Map<String, Object> productImageMap = productImages.get(0);
-                String imageDataString = (String) productImageMap.get("imageData");
-                byte[] imageData = Base64.getDecoder().decode(imageDataString);
-        	        
-        	        
-        	        Product productToUpdate = new Product();
-            productToUpdate.setProductId((Integer) productFromProductModule.get("productId"));
+               Product productToUpdate = new Product();
+          productToUpdate.setProductId((Integer)productFromProductModule.get("productId"));
             productToUpdate.setProductName((String)productFromProductModule.get("productName"));
-            productToUpdate.setDescription((String)productFromProductModule.get("description"));
-            productToUpdate.setBrand((String)productFromProductModule.get("brand"));
+          productToUpdate.setDescription((String)productFromProductModule.get("description"));
+           productToUpdate.setBrand((String)productFromProductModule.get("brand"));
             productToUpdate.setPrice((Double)productFromProductModule.get("price"));
-            productToUpdate.setImage(imageData);
+           
+                productToUpdate.setImage(imageData);
+       	 user.getProduct().add(productToUpdate);
+         userRepository.save(user);
+
+               }
+}
             
-            productsToUpdate.add(productToUpdate);
-        
-        }
-        User user = userRepository.findById(userId).orElseThrow(()-> new UserIdNotFoundException("Please input correct user id"));
-        user.setProduct(productsToUpdate);
-        userRepository.save(user);
-    
-}
-}
+            
+          

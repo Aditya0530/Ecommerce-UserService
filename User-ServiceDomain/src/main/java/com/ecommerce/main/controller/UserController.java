@@ -47,9 +47,9 @@ public ResponseEntity <Iterable<Product>> getproductByName(@PathVariable("produc
 	 return new ResponseEntity<Iterable<Product>>(p, HttpStatus.OK);
 }
 
-@PutMapping("/add/{userId}/{productName}")
-public ResponseEntity<String> updateUserProducts(@PathVariable("userId") int userId, @PathVariable("productName") String productName) {
-    userService.addToCart(userId, productName);
+@PutMapping("/add/{userId}/{productId}")
+public ResponseEntity<String> updateUserProducts(@PathVariable("userId") int userId, @PathVariable("productId") int productId) {
+    userService.addToCart(userId, productId);
     return new ResponseEntity<String>("Products updated successfully",HttpStatus.OK);
 }
 
