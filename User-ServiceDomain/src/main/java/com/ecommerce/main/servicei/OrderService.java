@@ -10,5 +10,5 @@ import com.ecommerce.main.model.User;
 
 
 public interface OrderService {
-public Order createOrder(Order order,List<Product> products); 
+public Order createOrder(Order order); 
 }
