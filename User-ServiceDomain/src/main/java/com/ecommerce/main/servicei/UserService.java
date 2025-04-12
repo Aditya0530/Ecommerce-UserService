@@ -20,5 +20,7 @@ public interface UserService {
 
 	public void addToCart(int userId, int productId);
 
+	public void removeToCart(int userId, int productId);
+
 
 }

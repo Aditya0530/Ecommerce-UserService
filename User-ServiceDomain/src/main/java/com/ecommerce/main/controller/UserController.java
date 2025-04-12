@@ -3,7 +3,9 @@ package com.ecommerce.main.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,7 +52,11 @@ public ResponseEntity <Iterable<Product>> getproductByName(@PathVariable("produc
 public ResponseEntity<String> updateUserProducts(@PathVariable("userId") int userId, @PathVariable("productId") int productId) {
     userService.addToCart(userId, productId);
     return new ResponseEntity<String>("Products updated successfully",HttpStatus.OK);
-
 }
 
+@DeleteMapping("/remove/{userId}/{productId}")
+public ResponseEntity<String> removeUserProducts(@PathVariable("userId") int userId, @PathVariable("productId") int productId) {
+    userService.removeToCart(userId, productId);
+    return new ResponseEntity<String>("Products Remove successfully",HttpStatus.OK);
+}
 }

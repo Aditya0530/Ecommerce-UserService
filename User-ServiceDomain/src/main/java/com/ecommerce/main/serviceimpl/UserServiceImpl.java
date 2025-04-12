@@ -25,6 +25,7 @@ import com.ecommerce.main.exceptionhandler.InvalidCredentialsException;
 import com.ecommerce.main.exceptionhandler.UserIdNotFoundException;
 import com.ecommerce.main.model.Product;
 import com.ecommerce.main.model.User;
+import com.ecommerce.main.repository.ProductRepository;
 import com.ecommerce.main.repository.UserRepository;
 import com.ecommerce.main.servicei.EmailService;
 import com.ecommerce.main.servicei.UserService;
@@ -33,6 +34,8 @@ import com.ecommerce.main.servicei.UserService;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired ProductRepository productRepository;
 
 	@Autowired
 	RestTemplate restTemplate;
@@ -122,6 +125,17 @@ public class UserServiceImpl implements UserService {
          userRepository.save(user);
 
                }
+
+	@Override
+	public void removeToCart(int userId, int productId) {
+	   
+		User user = userRepository.findById(userId).orElseThrow(()-> new UserIdNotFoundException("Please input correct user id"));
+        user.getProduct().removeIf(product -> product.getProductId()==productId);
+        productRepository.deleteById(productId);
+        
+	}
+		
+	
 }
             
             
