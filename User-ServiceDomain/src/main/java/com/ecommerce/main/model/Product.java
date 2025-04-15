@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 public class Product {
 
 	@Id
-	private int productId;// add to cart // remove from cart //
+	private int productId;
 	private String productName;
 	private String description;
 	private String brand;
@@ -41,5 +41,8 @@ public class Product {
 	@Lob
 	@Column(length = 999999999)
 	private byte[] image;
-	private int quantityAvailable;
+	
+	
+	
+	
 }

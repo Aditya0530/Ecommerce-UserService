@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -32,24 +33,25 @@ public class Order {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int orderId; // Auto-increment enabled
+	private int orderId; 
 
 	private double totalAmount;
 
 	@Enumerated(EnumType.STRING)
 	private StatusOrder orderStatus; // Pending, Confirmed, Cancelled
 
-	//auto save creation timestamp
 	@CreationTimestamp
 	private Date orderDate;
 
 	private double deliverycharges;
-	/*
-	 * @OneToOne(cascade = CascadeType.MERGE) private Product product;
-	 */
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "product_id", referencedColumnName = "productId") // FK in orders table
-	private Product product;
-
+	private int quantity;
 	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "product_id", referencedColumnName = "productId")
+	private Product product;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "address_id", referencedColumnName = "addressId") 
+	private Address address;
+
 }

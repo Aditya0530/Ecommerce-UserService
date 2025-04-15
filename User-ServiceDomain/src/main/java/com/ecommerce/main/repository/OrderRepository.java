@@ -1,28 +1,32 @@
 package com.ecommerce.main.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import com.ecommerce.main.enums.StatusOrder;
 import com.ecommerce.main.model.Order;
+import com.ecommerce.main.model.Product;
+
+import jakarta.transaction.Transactional;
 
 public interface OrderRepository extends CrudRepository<Order, Integer>{
+	
+	
+	
+	@Query(value = "SELECT * FROM orders o WHERE o.product_id = :productId AND o.user_id = :userId", nativeQuery = true)
+	List<Order> findByUserIdAndProductId(@Param("userId") int userId, @Param("productId") int productId);
 
-	
-	/*
-	 * @Query(value =
-	 * "SELECT o.* FROM `orders` o JOIN user_order uo ON o.order_id = uo.order_order_id JOIN user u ON uo.user_user_id = u.user_id WHERE u.user_id = :userId AND o.product_product_id = :productId"
-	 * , nativeQuery = true) Order findOrderByUserIdAndProductId(@Param("userId")
-	 * int userId, @Param("productId") int productId);
-	 */
-	
-	//@Query(value = "SELECT * FROM orders o WHERE o.user_id = ?1 AND o.product_id = ?2", nativeQuery = true)
-	//Optional<Order> findByUserIdAndProductId(int userId, int productId);
-	
-	@Query(value = "SELECT * FROM orders WHERE user_id = :userId AND product_id = :productId", nativeQuery = true)
-	Optional<Order> findByUserIdAndProductId(@Param("userId") int userId, @Param("productId") int productId);
+	@Modifying
+	@Transactional
+	@Query("update Order o Set o.orderStatus = :orderStatus where o.orderId = :orderId")
+	public void updateOrderStatus(@Param("orderId") int orderId, @Param("orderStatus")StatusOrder orderStatus);
 
+	@Query(value = "SELECT * FROM orders WHERE user_id = :userId", nativeQuery = true)
+	List<Order> getOrdersByUserId(@Param("userId") int userId);
 }

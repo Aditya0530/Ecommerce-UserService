@@ -1,16 +1,23 @@
 package com.ecommerce.main.servicei;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 
 import com.ecommerce.main.dto.ProductDto;
+
 import com.ecommerce.main.dto.UserDto;
+import com.ecommerce.main.enums.StatusOrder;
 import com.ecommerce.main.model.Order;
 import com.ecommerce.main.model.Product;
 import com.ecommerce.main.model.User;
 
 public interface UserService {
+
 	public UserDto saveUser(User user);
 
 	public Iterable<User> loginUser(String username, String password);
@@ -21,11 +28,19 @@ public interface UserService {
 
 	public Iterable<Product> getByName(String productName);
 
-	public void addToCart(int userId, String productName);
+	public void addToCart(int userId, int productId);
 
-	//public String purchaseProduct(int userId, String productName, int quantityAvailable);
-	public String purchaseProduct(int userId,int productId,Order order);
+	public String placeOrder(int userId, int productId, Order order);
+
+	List<Order> getByUserIdProductId(int userId, int productId);
+	
+	public void orderStatus(int orderId,StatusOrder orderStatus);
+	
+	public  Map<String,Object> viewCart(int userId);
+	
+	public List<Order> getOrderByUserId(int userId);
+	
+	public  List<Product> getProductByUserId(int userId);
 	
 	
-	public Optional<Order> getByUserIdAndProductId(int userId,int productId);
 }

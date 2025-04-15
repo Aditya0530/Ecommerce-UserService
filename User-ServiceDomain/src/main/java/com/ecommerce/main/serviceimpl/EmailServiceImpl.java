@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.main.exceptionhandler.EmailSendingException;
+import com.ecommerce.main.model.Order;
 import com.ecommerce.main.model.User;
 import com.ecommerce.main.servicei.EmailService;
 
@@ -46,22 +47,34 @@ public class EmailServiceImpl implements EmailService {
     
 	}
 
-	public void sendOrderConfirmationEmail(User user,double totalAmount, double deliveryCharge) {
+	public void sendOrderConfirmationEmail(User user, Order order) {
 	    String subject = "🛍️ Your Order Confirmation - " + user.getName();
 	    
 	    String message = "<div style='font-family: Arial, sans-serif; padding: 20px;'>" +
-	                     "<h2 style='color: #008CBA;'>Your Order is Confirmed! 🎉</h2>" +
-	                     "<p>Dear Customer,</p>" +
-	                     "<p>Thank you for shopping with <b>YourStore</b>. Your order <b>" + "</b> has been successfully placed.</p>" +
-	                     "<table style='width: 100%; border-collapse: collapse;'>" +
-	                     "<tr><td><b>Total Amount:</b></td><td>$" + totalAmount + "</td></tr>" +
-	                     "<tr><td><b>Delivery Charges:</b></td><td>$" + deliveryCharge + "</td></tr>" +
-	                     "<tr><td><b>Grand Total:</b></td><td><b>$" + (totalAmount + deliveryCharge) + "</b></td></tr>" +
-	                     "</table>" +
-	                     "<p>We will notify you once your order is shipped.</p>" +
-	                     "<hr>" +
-	                     "<p>📞 Need help? Contact us at <a href='mailto:support@yourstore.com'>support@yourstore.com</a></p>" +
-	                     "</div>";
+	    	    "<h2 style='color: #008CBA;'>Your Order is Confirmed! 🎉</h2>" +
+	    	    "<p>Dear " + user.getName() + ",</p>" +
+	    	    "<p>Thank you for shopping with <b>YourStore</b>. Your order has been successfully placed.</p>" +
+	    	    "<h3>Order Summary:</h3>" +
+	    	    "<table style='width: 100%; border-collapse: collapse; border: 1px solid #ddd;'>" +
+	    	    "<tr style='background-color: #f2f2f2;'><th>Product Name</th><th>Quantity</th><th>Price</th><th>Total</th></tr>" +
+	    	    "<tr>" +
+	    	    "<td>" + order.getProduct().getProductName() + "</td>" +
+	    	    "<td>" + order.getQuantity() + "</td>" +
+	    	    "<td>₹" + order.getProduct().getPrice() + "</td>" +
+	    	    "<td>₹" + (order.getQuantity() * order.getProduct().getPrice()) + "</td>" +
+	    	    "</tr>" +
+	    	    "</table>" +
+	    	    "<p><b>Delivery Charges:</b> ₹" + order.getDeliverycharges() + "</p>" +
+	    	    "<p><b>Grand Total:</b> ₹" + (order.getTotalAmount() + order.getDeliverycharges()) + "</p>" +
+	    	    "<hr>" +
+	    	    "<p>Your order will be delivered to the following address:</p>" +
+	    	    "<p><b>" + order.getAddress().getArea() + ", " + order.getAddress().getCity() + " - " + order.getAddress().getPincode() + "</b></p>" +
+	    	    "<p>📞 Contact Number: " + order.getAddress().getContactNo() + "</p>" +
+	    	    "<p>We will notify you once your order is shipped.</p>" +
+	    	    "<hr>" +
+	    	    "<p>📞 Need help? Contact us at <a href='mailto:support@yourstore.com'>support@yourstore.com</a></p>" +
+	    	    "</div>";
+
 
 	    try {
 	        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -69,7 +82,7 @@ public class EmailServiceImpl implements EmailService {
 	        helper.setFrom(mailFrom);
 	        helper.setTo(user.getEmail());
 	        helper.setSubject(subject);
-	        helper.setText(message, true); // ✅ Set `true` to enable HTML content
+	        helper.setText(message, true); 
 
 	        javaMailSender.send(mimeMessage);
 	    } catch (Exception e) {

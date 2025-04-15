@@ -1,20 +1,16 @@
 package com.ecommerce.main.controller;
 
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
-import org.springframework.boot.autoconfigure.gson.GsonBuilderCustomizer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.GsonBuilderUtils;
-import org.springframework.http.converter.json.GsonFactoryBean;
-import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,15 +19,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-import com.ecommerce.main.dto.ProductDto;
 import com.ecommerce.main.dto.UserDto;
+import com.ecommerce.main.enums.StatusOrder;
 import com.ecommerce.main.exceptionhandler.InvalidCredentialsException;
 import com.ecommerce.main.model.Order;
+
 import com.ecommerce.main.model.Product;
 import com.ecommerce.main.model.User;
 import com.ecommerce.main.servicei.UserService;
-import com.google.gson.Gson;
 
 import jakarta.validation.Valid;
 
@@ -66,35 +61,32 @@ public class UserController {
 		return new ResponseEntity<Iterable<Product>>(p, HttpStatus.OK);
 	}
 
-	@PutMapping("/add/{userId}/{productName}")
+	@PutMapping("/add/{userId}/{productId}")
 	public ResponseEntity<String> updateUserProducts(@PathVariable("userId") int userId,
-			@PathVariable("productName") String productName) {
-		userService.addToCart(userId, productName);
+			@PathVariable("productId") int productId) {
+		userService.addToCart(userId, productId);
 		return new ResponseEntity<String>("Products updated successfully", HttpStatus.OK);
 
 	}
 
-	/*
-	 * @PostMapping("/purchase_Product/{userId}/{productName}") public
-	 * ResponseEntity<String> purchaseProduct(@PathVariable("userId") int userId,
-	 * 
-	 * @PathVariable("productName") String productName) { { String response =
-	 * userService.purchaseProduct(userId, productName); return new
-	 * ResponseEntity<>(response, HttpStatus.OK);
-	 * 
-	 * } }
-	 */
-	@PatchMapping("/purchase_Product/{userId}/{productId}")
-	public ResponseEntity<String> purchaseProduct(@PathVariable("userId") int userId,
-			@PathVariable("productId") int productId,@RequestBody Order order) {
-		
-	  String msg=userService.purchaseProduct(userId, productId, order);
-		
-		return new ResponseEntity<String>(msg,HttpStatus.OK);
-		
+	@PatchMapping("/place_Order/{userId}/{productId}")
+	public ResponseEntity<String> purchaseProduct(@PathVariable("userId") int userId,@PathVariable("productId") int productId,
+			@RequestBody Order order) {
+		String msg = userService.placeOrder(userId, productId, order);
+		return new ResponseEntity<String>(msg, HttpStatus.OK);
 	}
 
+	@PatchMapping("/order_Status/{orderId}/{orderStatus}")
+	public ResponseEntity<String> changeStatus(@PathVariable("orderId") int orderId,@PathVariable("orderStatus") StatusOrder orderStatus) {
+		userService.orderStatus(orderId, orderStatus);
+		return new ResponseEntity<>("Order Status Updated",HttpStatus.OK);
+	}
+	
+	@GetMapping("/view_Cart/{userId}") 
+	public ResponseEntity<Map<String, Object>> viewCart(@PathVariable("userId") int userId) {
+	    Map<String, Object> mapProduct = userService.viewCart(userId);
+	    return new ResponseEntity<>(mapProduct, HttpStatus.OK);
 	}
 
-//patchmapping userId productId and Order Object
+}
 

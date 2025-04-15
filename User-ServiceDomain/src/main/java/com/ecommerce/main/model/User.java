@@ -52,12 +52,6 @@ public class User {
 	@Pattern(regexp = "^[0-9]{10}$", message = "Mobile number must be exactly 10 digits")
     private String mobileno;
 	
-	/*
-	 * @OneToMany(cascade = CascadeType.MERGE) // patch method for user //
-	 * logincheck //getAll //post only user private List<Product> product;
-	 * 
-	 * @OneToMany(cascade = CascadeType.MERGE) private List<Order> order;
-	 */
 	@OneToMany(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "user_id", referencedColumnName = "userId")
 	private List<Product> product;

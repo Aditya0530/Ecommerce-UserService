@@ -54,5 +54,11 @@ public class GlobalExceptionHandler {
 		ErrorDto errDto = new ErrorDto(ex.getMessage());
 		return new ResponseEntity<>(errDto, HttpStatus.UNAUTHORIZED);
 	}
+	
+	@ExceptionHandler(DuplicateProductFoundException.class)
+	public ResponseEntity<ErrorDto> handleDuplicateIdExceptions(DuplicateProductFoundException ex) {
+		ErrorDto errDto=new ErrorDto(ex.getMessage());
+		return new ResponseEntity<>(errDto, HttpStatus.UNAUTHORIZED);
+	}
 
 }
