@@ -1,4 +1,3 @@
-
 package com.ecommerce.main.serviceimpl;
 
 import java.awt.Image;
@@ -31,6 +30,7 @@ import com.ecommerce.main.model.Order;
 import com.ecommerce.main.model.Product;
 import com.ecommerce.main.model.User;
 import com.ecommerce.main.repository.OrderRepository;
+
 import com.ecommerce.main.repository.ProductRepository;
 import com.ecommerce.main.repository.UserRepository;
 import com.ecommerce.main.servicei.EmailService;
@@ -40,6 +40,7 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
+	
 	@Autowired
 	UserRepository userRepository;
 
@@ -236,7 +237,14 @@ public class UserServiceImpl implements UserService {
 		responseMap.put("cartSummary", Map.of("totalPrice", totalPrice, "cartProduct", productResponse));
 		return responseMap;
 	}
-
+	@Override
+	public void removeFromCart(int userId, int productId) {
+	   
+		User user = userRepository.findById(userId).orElseThrow(()-> new UserIdNotFoundException("Please input correct user id"));
+        user.getProduct().removeIf(product -> product.getProductId()==productId);
+        productRepository.deleteById(productId);
+        
+	}
 	@Override
 	public List<Order> getOrderByUserId(int userId) {
 
@@ -248,5 +256,4 @@ public class UserServiceImpl implements UserService {
 
 		return productRepository.getProductsByUserId(userId);
 	}
-
-}
+ }

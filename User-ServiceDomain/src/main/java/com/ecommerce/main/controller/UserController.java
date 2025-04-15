@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,23 +71,29 @@ public class UserController {
 	}
 
 	@PatchMapping("/place_Order/{userId}/{productId}")
-	public ResponseEntity<String> purchaseProduct(@PathVariable("userId") int userId,@PathVariable("productId") int productId,
-			@RequestBody Order order) {
+	public ResponseEntity<String> purchaseProduct(@PathVariable("userId") int userId,
+			@PathVariable("productId") int productId, @RequestBody Order order) {
 		String msg = userService.placeOrder(userId, productId, order);
 		return new ResponseEntity<String>(msg, HttpStatus.OK);
 	}
 
 	@PatchMapping("/order_Status/{orderId}/{orderStatus}")
-	public ResponseEntity<String> changeStatus(@PathVariable("orderId") int orderId,@PathVariable("orderStatus") StatusOrder orderStatus) {
+	public ResponseEntity<String> changeStatus(@PathVariable("orderId") int orderId,
+			@PathVariable("orderStatus") StatusOrder orderStatus) {
 		userService.orderStatus(orderId, orderStatus);
-		return new ResponseEntity<>("Order Status Updated",HttpStatus.OK);
+		return new ResponseEntity<>("Order Status Updated", HttpStatus.OK);
 	}
-	
-	@GetMapping("/view_Cart/{userId}") 
+
+	@GetMapping("/view_Cart/{userId}")
 	public ResponseEntity<Map<String, Object>> viewCart(@PathVariable("userId") int userId) {
-	    Map<String, Object> mapProduct = userService.viewCart(userId);
-	    return new ResponseEntity<>(mapProduct, HttpStatus.OK);
+		Map<String, Object> mapProduct = userService.viewCart(userId);
+		return new ResponseEntity<>(mapProduct, HttpStatus.OK);
 	}
 
+	@DeleteMapping("/remove/{userId}/{productId}")
+	public ResponseEntity<String> removeUserProducts(@PathVariable("userId") int userId,
+			@PathVariable("productId") int productId) {
+		userService.removeFromCart(userId, productId);
+		return new ResponseEntity<String>("Products Remove successfully", HttpStatus.OK);
+	}
 }
-

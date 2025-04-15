@@ -17,8 +17,6 @@ import jakarta.transaction.Transactional;
 
 public interface OrderRepository extends CrudRepository<Order, Integer>{
 	
-	
-	
 	@Query(value = "SELECT * FROM orders o WHERE o.product_id = :productId AND o.user_id = :userId", nativeQuery = true)
 	List<Order> findByUserIdAndProductId(@Param("userId") int userId, @Param("productId") int productId);
 

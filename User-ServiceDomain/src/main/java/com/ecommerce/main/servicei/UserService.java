@@ -32,15 +32,16 @@ public interface UserService {
 
 	public String placeOrder(int userId, int productId, Order order);
 
-	List<Order> getByUserIdProductId(int userId, int productId);
-	
-	public void orderStatus(int orderId,StatusOrder orderStatus);
-	
-	public  Map<String,Object> viewCart(int userId);
-	
+	public void removeFromCart(int userId, int productId);
+
+	public List<Order> getByUserIdProductId(int userId, int productId);
+
+	public void orderStatus(int orderId, StatusOrder orderStatus);
+
+	public Map<String, Object> viewCart(int userId);
+
 	public List<Order> getOrderByUserId(int userId);
-	
-	public  List<Product> getProductByUserId(int userId);
-	
-	
+
+	public List<Product> getProductByUserId(int userId);
+
 }
