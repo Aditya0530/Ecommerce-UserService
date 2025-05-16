@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,8 +32,10 @@ import com.ecommerce.main.servicei.UserService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/user")
+
 public class UserController {
 	@Autowired
 	UserService userService;
@@ -46,7 +49,13 @@ public class UserController {
 	@GetMapping("/login/{username}/{password}")
 	public ResponseEntity<Iterable<User>> login(@PathVariable("username") String username,
 			@PathVariable("password") String password) {
-		Iterable<User> user = userService.loginUser(username, password);
+		Iterable<User> user = userService.loginAdmin(username, password);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+	@GetMapping("/loginuser/{username}/{password}")
+	public ResponseEntity<User> Userlogin(@PathVariable("username") String username,
+			@PathVariable("password") String password) {
+		User user = userService.loginUser(username, password);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
@@ -69,7 +78,6 @@ public class UserController {
 		return new ResponseEntity<String>("Products updated successfully", HttpStatus.OK);
 
 	}
-
 	@PatchMapping("/place_Order/{userId}/{productId}")
 	public ResponseEntity<String> purchaseProduct(@PathVariable("userId") int userId,
 			@PathVariable("productId") int productId, @RequestBody Order order) {
