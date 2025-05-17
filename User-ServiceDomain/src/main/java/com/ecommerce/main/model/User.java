@@ -43,14 +43,6 @@ public class User {
 	@NotBlank(message = "Username cannot be empty")
 	@Size(min = 5, max = 20, message = "Username must be between 5 and 20 characters")
 	private String username;
-
-	@NotBlank(message = "Address cannot be empty")
-	@Size(min = 10, max = 100, message = "Address must be between 10 and 100 characters")
-	private String address;
-	
-	@NotNull(message = "Mobile number cannot be null")
-	@Pattern(regexp = "^[0-9]{10}$", message = "Mobile number must be exactly 10 digits")
-    private String mobileno;
 	
 	@OneToMany(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "user_id", referencedColumnName = "userId")

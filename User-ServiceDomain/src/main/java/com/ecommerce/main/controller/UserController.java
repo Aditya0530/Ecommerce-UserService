@@ -47,15 +47,9 @@ public class UserController {
 	}
 
 	@GetMapping("/login/{username}/{password}")
-	public ResponseEntity<Iterable<User>> login(@PathVariable("username") String username,
+	public ResponseEntity<Object> login(@PathVariable("username") String username,
 			@PathVariable("password") String password) {
-		Iterable<User> user = userService.loginAdmin(username, password);
-		return new ResponseEntity<>(user, HttpStatus.OK);
-	}
-	@GetMapping("/loginuser/{username}/{password}")
-	public ResponseEntity<User> Userlogin(@PathVariable("username") String username,
-			@PathVariable("password") String password) {
-		User user = userService.loginUser(username, password);
+		Object user = userService.loginAdmin(username, password);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
