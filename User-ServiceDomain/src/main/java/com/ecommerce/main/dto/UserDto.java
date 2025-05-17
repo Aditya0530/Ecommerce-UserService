@@ -19,7 +19,6 @@ public class UserDto {
 	private String email;
 	private String password;
 	private String username;
-	private String address;
 	private List<Product> product;
 	private List<Order> order;
 	
@@ -29,8 +28,7 @@ public class UserDto {
         this.email = user.getEmail();
         this.password = user.getPassword(); 
         this.username = user.getUsername();
-        this.address = user.getAddress();
         this.product = user.getProduct();
-        this.order = user.getOrder();
+        this.order = user.getOrder();    
     }
 }

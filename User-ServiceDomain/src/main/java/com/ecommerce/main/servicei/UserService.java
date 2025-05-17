@@ -21,7 +21,8 @@ public interface UserService {
 	public UserDto saveUser(User user);
 
 	public User loginUser(String username, String password);
-	public Iterable<User> loginAdmin(String username, String password);
+
+	public Object loginAdmin(String username, String password);
 
 	public User getUser(int userId);
 
