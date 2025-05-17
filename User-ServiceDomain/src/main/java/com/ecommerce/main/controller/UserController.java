@@ -104,4 +104,4 @@ public class UserController {
 		userService.removeFromCart(userId, productId);
 		return new ResponseEntity<String>("Products Remove successfully", HttpStatus.OK);
 	      }                                                           
-}
+}                      
