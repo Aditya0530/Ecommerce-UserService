@@ -97,5 +97,11 @@ public class UserController {
 			@PathVariable("productId") int productId) {
 		userService.removeFromCart(userId, productId);
 		return new ResponseEntity<String>("Products Remove successfully", HttpStatus.OK);
-	      }                                                           
+	      }    
+	@GetMapping("/loginUser/{username}/{password}")
+	public ResponseEntity<User> loginUser(@PathVariable("username") String username,@PathVariable("password") String password) {
+		User user= userService.loginUser(username, password);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+
 }                      

@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 					emailService.sendEmail(userEmail, "Login Successful", "You have successfully logged in.");
 				} catch (EmailSendingException e) {
 					LOGGER.error("Failed to send email", e);
-				}
+				    }
 				return user;
 			}
 		}
