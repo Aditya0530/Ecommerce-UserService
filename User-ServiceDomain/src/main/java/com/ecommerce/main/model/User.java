@@ -44,6 +44,8 @@ public class User {
 	@Size(min = 5, max = 20, message = "Username must be between 5 and 20 characters")
 	private String username;
 	
+	private String role;
+	
 	@OneToMany(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "user_id", referencedColumnName = "userId")
 	private List<Product> product;

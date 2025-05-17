@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto saveUser(User user) {
 		LOGGER.info("Saving user: {}", user.getUsername());
+		user.setRole("User");
 		userRepository.save(user);
 		LOGGER.info("User saved successfully: {}", user.getUsername());
 		return new UserDto(user);
