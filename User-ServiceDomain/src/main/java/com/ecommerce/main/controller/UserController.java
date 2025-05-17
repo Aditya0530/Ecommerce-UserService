@@ -1,15 +1,11 @@
 package com.ecommerce.main.controller;
 
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,13 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.ecommerce.main.dto.UserDto;
 import com.ecommerce.main.enums.StatusOrder;
-import com.ecommerce.main.exceptionhandler.InvalidCredentialsException;
 import com.ecommerce.main.model.Order;
 
 import com.ecommerce.main.model.Product;
