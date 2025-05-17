@@ -34,6 +34,7 @@ import com.ecommerce.main.repository.OrderRepository;
 import com.ecommerce.main.repository.ProductRepository;
 import com.ecommerce.main.repository.UserRepository;
 import com.ecommerce.main.servicei.EmailService;
+import com.ecommerce.main.servicei.PaymentService;
 import com.ecommerce.main.servicei.UserService;
 
 import jakarta.transaction.Transactional;
@@ -55,6 +56,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private PaymentService paymentService;
 
 	private final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -167,6 +171,10 @@ public class UserServiceImpl implements UserService {
 			return "You Already Ordered This Product";
 		} else {
 			double totalAmount = managedProduct.getPrice() * order.getQuantity();
+			double sendAmount=order.getRequestAmount();
+			if(sendAmount==totalAmount) {
+			String paymentMessage=paymentService.processPayment(userId, productId, totalAmount);
+			
 			order.setOrderStatus(StatusOrder.CONFIRMED);
 			order.setTotalAmount(totalAmount);
 			order.setDeliverycharges(100);
@@ -179,8 +187,13 @@ public class UserServiceImpl implements UserService {
 
 			emailService.sendOrderConfirmationEmail(user, order);
 			LOGGER.info("Order confirmation email sent to user {}", userId);
-			return "Order Placed Successfully";
-
+			
+			return paymentMessage +"Order Placed Successfully";
+			} else {
+				order.setOrderStatus(StatusOrder.PENDING);
+	            LOGGER.warn("Amount mismatch: Expected ₹{}, Received ₹{} from user {}", totalAmount, sendAmount, userId);
+	            return "Payment amount mismatch. Expected: ₹" + totalAmount + ", but received: ₹" + sendAmount + ". Order not placed.";
+	        }
 		}
 	}
 

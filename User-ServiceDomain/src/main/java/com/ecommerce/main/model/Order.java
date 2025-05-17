@@ -36,6 +36,8 @@ public class Order {
 	private int orderId; 
 
 	private double totalAmount;
+	
+	private double requestAmount;
 
 	@Enumerated(EnumType.STRING)
 	private StatusOrder orderStatus; // Pending, Confirmed, Cancelled

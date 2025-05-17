@@ -13,6 +13,8 @@ import com.ecommerce.main.model.Order;
 import com.ecommerce.main.model.Product;
 import com.ecommerce.main.model.User;
 
+import jakarta.transaction.Transactional;
+
 public interface UserRepository extends CrudRepository<User, Integer> {
 
 	public Iterable<User> findAllByUsernameAndPassword(String username, String password);
@@ -20,5 +22,9 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 	Optional<User> findByUserId(Integer userId);
 
 	public User findAllByUserId(int id);
+	
+	
+	@Query("Select Order o from User u")
+	public List<Order> getOrders();
 
 }
