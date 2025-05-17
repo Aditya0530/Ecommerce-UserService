@@ -54,19 +54,24 @@ public class UserServiceImpl implements UserService {
 		LOGGER.info("User saved successfully: {}", user.getUsername());
 		return new UserDto(user);
 	}
-
+	
 	@Override
-	public Iterable<User> loginUser(String username, String password) {
-
+	public Iterable<User> loginAdmin(String username, String password) {
 		if ("Admin".equalsIgnoreCase(username) && "Admin".equalsIgnoreCase(password)) {
 			return userRepository.findAll();
-		} else {
-			List<User> user = (List<User>) userRepository.findAllByUsernameAndPassword(username, password);
+	}
+		return null;
+	
+	}
 
-			if (user.isEmpty()) {
+	@Override
+	public User loginUser(String username, String password) {
+	User user =userRepository.findAllByUsernameAndPassword(username, password);
+
+			if (user==null) {
 				throw new InvalidCredentialsException("Username And Password Incorrect");
 			} else {
-				String userEmail = user.get(0).getEmail();
+				String userEmail = user.getEmail();
 				try {
 					emailService.sendEmail(userEmail, "Login Successful", "You have successfully logged in.");
 				} catch (EmailSendingException e) {
@@ -75,7 +80,7 @@ public class UserServiceImpl implements UserService {
 				return user;
 			}
 		}
-	}
+
 
 	@Override
 	public Iterable<Product> getAll() {
@@ -246,4 +251,6 @@ public class UserServiceImpl implements UserService {
 
 		return productRepository.getProductsByUserId(userId);
 	}
+
+	
  }

@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ecommerce.main.dto.UserDto;
 import com.ecommerce.main.enums.StatusOrder;
 import com.ecommerce.main.exceptionhandler.InvalidCredentialsException;
@@ -32,9 +35,11 @@ import com.ecommerce.main.servicei.UserService;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin
+
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/user")
+
 public class UserController {
 	@Autowired
 	UserService userService;
@@ -48,7 +53,13 @@ public class UserController {
 	@GetMapping("/login/{username}/{password}")
 	public ResponseEntity<Iterable<User>> login(@PathVariable("username") String username,
 			@PathVariable("password") String password) {
-		Iterable<User> user = userService.loginUser(username, password);
+		Iterable<User> user = userService.loginAdmin(username, password);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+	@GetMapping("/loginuser/{username}/{password}")
+	public ResponseEntity<User> Userlogin(@PathVariable("username") String username,
+			@PathVariable("password") String password) {
+		User user = userService.loginUser(username, password);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
@@ -71,7 +82,6 @@ public class UserController {
 		return new ResponseEntity<String>("Products updated successfully", HttpStatus.OK);
 
 	}
-
 	@PatchMapping("/place_Order/{userId}/{productId}")
 	public ResponseEntity<String> purchaseProduct(@PathVariable("userId") int userId,
 			@PathVariable("productId") int productId, @RequestBody Order order) {
@@ -98,4 +108,10 @@ public class UserController {
 		userService.removeFromCart(userId, productId);
 		return new ResponseEntity<String>("Products Remove successfully", HttpStatus.OK);
 	      }
+
+	@PutMapping("/updateAll/{userId}")
+	public ResponseEntity<String> updateProduct(@RequestBody User user) {
+		userService.saveUser(user);
+		return new ResponseEntity<String>("Update Successful", HttpStatus.OK);
+	}
 }

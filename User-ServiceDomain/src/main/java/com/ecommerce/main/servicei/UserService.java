@@ -20,7 +20,8 @@ public interface UserService {
 
 	public UserDto saveUser(User user);
 
-	public Iterable<User> loginUser(String username, String password);
+	public User loginUser(String username, String password);
+	public Iterable<User> loginAdmin(String username, String password);
 
 	public User getUser(int userId);
 
