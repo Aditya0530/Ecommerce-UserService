@@ -1,20 +1,10 @@
 package com.ecommerce.main.serviceimpl;
 
-import java.awt.Image;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import java.util.Map;
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +20,6 @@ import com.ecommerce.main.model.Order;
 import com.ecommerce.main.model.Product;
 import com.ecommerce.main.model.User;
 import com.ecommerce.main.repository.OrderRepository;
-
 import com.ecommerce.main.repository.ProductRepository;
 import com.ecommerce.main.repository.UserRepository;
 import com.ecommerce.main.servicei.EmailService;
@@ -69,19 +58,24 @@ public class UserServiceImpl implements UserService {
 		LOGGER.info("User saved successfully: {}", user.getUsername());
 		return new UserDto(user);
 	}
-
+	
 	@Override
-	public Iterable<User> loginUser(String username, String password) {
-
+	public Iterable<User> loginAdmin(String username, String password) {
 		if ("Admin".equalsIgnoreCase(username) && "Admin".equalsIgnoreCase(password)) {
 			return userRepository.findAll();
-		} else {
-			List<User> user = (List<User>) userRepository.findAllByUsernameAndPassword(username, password);
+	}
+		return null;
+	
+	}
 
-			if (user.isEmpty()) {
+	@Override
+	public User loginUser(String username, String password) {
+	User user =userRepository.findAllByUsernameAndPassword(username, password);
+
+			if (user==null) {
 				throw new InvalidCredentialsException("Username And Password Incorrect");
 			} else {
-				String userEmail = user.get(0).getEmail();
+				String userEmail = user.getEmail();
 				try {
 					emailService.sendEmail(userEmail, "Login Successful", "You have successfully logged in.");
 				} catch (EmailSendingException e) {
@@ -90,7 +84,7 @@ public class UserServiceImpl implements UserService {
 				return user;
 			}
 		}
-	}
+
 
 	@Override
 	public Iterable<Product> getAll() {
@@ -121,7 +115,8 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(() -> new UserIdNotFoundException("Please input correct user id"));
 		int newProductId = (Integer) productFromProductModule.get("productId");
 
-		for (Product product : user.getProduct()) {
+		Iterable<Product> existproduct= productRepository.findAll();
+		for (Product product : existproduct) {
 
 			if (product.getProductId() == newProductId) {
 				LOGGER.warn("Duplicate product found in cart for user {}", userId);
@@ -269,4 +264,6 @@ public class UserServiceImpl implements UserService {
 
 		return productRepository.getProductsByUserId(userId);
 	}
+
+	
  }
