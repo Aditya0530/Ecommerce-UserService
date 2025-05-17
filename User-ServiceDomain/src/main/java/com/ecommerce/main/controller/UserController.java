@@ -97,5 +97,5 @@ public class UserController {
 			@PathVariable("productId") int productId) {
 		userService.removeFromCart(userId, productId);
 		return new ResponseEntity<String>("Products Remove successfully", HttpStatus.OK);
-	      }
+	      }                                                           
 }
