@@ -220,7 +220,6 @@ public class UserServiceImpl implements UserService {
 	    List<Map<String, Object>> listProduct = new ArrayList<>();
 	    Map<String, Object> responseMap = new LinkedHashMap<>();
 
-	    // Reset totals at the start of method to avoid accumulation
 	    double totalAmount = 0.0;
 	    double deliveryCharges = 0.0;
 	    double grandTotal = 0.0;
@@ -238,6 +237,7 @@ public class UserServiceImpl implements UserService {
 	        orderedProduct.put("productPrice", product.getPrice());
 	        orderedProduct.put("orderStatus",order.getOrderStatus());
 	        orderedProduct.put("requestAmount",order.getRequestAmount());
+	        orderedProduct.put("orderId", order.getOrderId());
 	        totalAmount += product.getPrice() * order.getQuantity();
 	        deliveryCharges += order.getDeliverycharges();
 
